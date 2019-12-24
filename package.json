@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fullcalendar/bootstrap": "^4.3.0",
     "@fullcalendar/core": "^4.3.1",
     "@fullcalendar/daygrid": "^4.3.0",
     "@fullcalendar/interaction": "^4.3.0",
@@ -15,9 +16,11 @@
     "@types/node": "^12.12.20",
     "@types/react": "^16.9.16",
     "@types/react-dom": "^16.9.4",
+    "@types/reactstrap": "^8.2.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-scripts": "3.3.0",
+    "reactstrap": "^8.2.0",
     "typescript": "^3.7.3"
   },
   "scripts": {
