@@ -26,20 +26,20 @@ export const ReactCalendar: React.FC = () => {
         //if yes set time from event, if no set timeSrart & timeEnd to current time
         toggle();
         //set clicked day date
+        const date = new Date();
+        const timeStart = date.getHours() + ":00";
+        const timeEnd = (date.getHours() + 1) + ":00";
         setClickedDay({ 
             title: '',
             start: event.date,
             description:'',
             date: event.dateStr,
-            timeStart: new Date().getTime().toString(),
-            timeEnd: new Date().getTime().toString()
+            timeStart: timeStart,
+            timeEnd: timeEnd,
         })
-        console.log(new Date().getTime().toString());
         setDate(event.dateStr);
         setTimeStart(clickedDay.timeStart);
         setTimeEnd(clickedDay.timeEnd);
-        // console.log(event.date);
-        // console.log(event.dateStr);
     }
 
     const handleInputChange = (event: any) => {
