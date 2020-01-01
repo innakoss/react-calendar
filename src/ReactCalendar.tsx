@@ -12,12 +12,11 @@ export const ReactCalendar: React.FC = () => {
     let today = new Date().toISOString();
     const [calendarEvents, setCalendarEvents] = useState([ { title: 'Current Event Title', start: today, description: 'Work' } ])
     const [modal, setModal] = useState(false);
-    const [clickedDay, setClickedDay] = useState({ title: '', start: '', description: '', date: '', timeStart: '', timeEnd: '' });
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [date, setDate] = useState('');
-    const [timeStart, setTimeStart] = useState('');
-    const [timeEnd, setTimeEnd] = useState('');
+    const [formTitle, setFormTitle] = useState('');
+    const [formDescription, setFormDescription] = useState('');
+    const [formDate, setFormDate] = useState('');
+    const [formTimeStart, setFormTimeStart] = useState('');
+    const [formTimeEnd, setFormTimeEnd] = useState('');
 
     const toggle = () => setModal(!modal);
 
@@ -25,21 +24,13 @@ export const ReactCalendar: React.FC = () => {
         //do check here if event has time slot clicked, 
         //if yes set time from event, if no set timeSrart & timeEnd to current time
         toggle();
-        //set clicked day date
-        const date = new Date();
-        const timeStart = date.getHours() + ":00";
-        const timeEnd = (date.getHours() + 1) + ":00";
-        setClickedDay({ 
-            title: '',
-            start: event.date,
-            description:'',
-            date: event.dateStr,
-            timeStart: timeStart,
-            timeEnd: timeEnd,
-        })
-        setDate(event.dateStr);
-        setTimeStart(clickedDay.timeStart);
-        setTimeEnd(clickedDay.timeEnd);
+        setFormDate(event.dateStr);
+        let timeNow = new Date();
+        let start = timeNow.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+        let timePlusOneHour = new Date(timeNow.setHours(timeNow.getHours() + 1));
+        let end = timePlusOneHour.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+        setFormTimeStart(start);
+        setFormTimeEnd(end);
     }
 
     const handleInputChange = (event: any) => {
@@ -47,41 +38,36 @@ export const ReactCalendar: React.FC = () => {
         const name = event.target.name;
         switch (name) {
             case 'title': {
-                setTitle(value);
+                setFormTitle(value);
                 break;
             }
             case 'description': {
-                setDescription(value);
+                setFormDescription(value);
                 break;
             }
             case 'timeStart': {
-                setTimeStart(value);
+                setFormTimeStart(value);
                 break;
             }
             case 'timeEnd': {
-                setTimeEnd(value);
+                setFormTimeEnd(value);
                 break;
             }
-            // when 'date' for datepicker set here, value duplicated to description' field as well(bug)
-            // case 'date': {
-            //     setDate(value);
-            //     break;
-            // }
+            case 'date': {
+                setFormDate(value);
+                break;
+            }
         }
       }
 
-    const handleDateChange = (event: any) => {
-        setDate(event.target.value);
-    }
-
     const handleSubmit = (event: any) => {
         toggle();
+        //create event start time
+        const eventStart = formDate + "T" + formTimeStart + ":00";
         //add new event to events list
-        setCalendarEvents(calendarEvents.concat( { title: title, start: date, description: description} ));
-        setTitle('');
-        setDescription('');
-        console.log(clickedDay.start);
-        console.log(calendarEvents);
+        setCalendarEvents(calendarEvents.concat( { title: formTitle, start: eventStart, description: formDescription} ));
+        setFormTitle('');
+        setFormDescription('');
         event.preventDefault();
       }
 
@@ -107,33 +93,33 @@ export const ReactCalendar: React.FC = () => {
                         <input 
                             name="date"
                             type="date"
-                            value={date} 
-                            onChange={handleDateChange} />
+                            value={formDate} 
+                            onChange={handleInputChange} />
                         <hr />
                         <label>Time:</label><br />
                         <input
                             type="time"
                             name="timeStart"
-                            value={timeStart}
+                            value={formTimeStart}
                             onChange={handleInputChange} /> ~ 
                         <input 
                             type="time"
                             name="timeEnd"
-                            value={timeEnd}
+                            value={formTimeEnd}
                             onChange={handleInputChange} />
                         <hr />
                         <label>Title:</label><br />
                         <input 
                             name="title"
                             type="text"
-                            value={title}
+                            value={formTitle}
                             onChange={handleInputChange} />
                         <hr />
                         <label>Description:</label><br />
                         <textarea
                             name="description"
                             rows={4}
-                            value={description}
+                            value={formDescription}
                             onChange={handleInputChange} />
                         <hr />
                         <input type="submit" value="Submit" />
