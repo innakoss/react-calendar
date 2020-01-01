@@ -1,1 +1,1 @@
-# react-calendar
+# This repository contains React Calendar
